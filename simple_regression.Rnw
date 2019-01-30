@@ -1,0 +1,110 @@
+\documentclass{article}
+
+\begin{document}
+
+Simple regression - computational example
+
+<<eval=FALSE>>=
+set.seed(12345)
+@
+
+Model: (vector form):
+
+\[
+Y = X\beta + e
+\]
+
+\[
+Y=\left[\begin{array}{c}y_1\\y_2\\y_3\\\vdots\\y_n\end{array}\right]\quad
+X=\left[\begin{array}{ll}1&x_1\\1&x_2\\1&x_3\\\vdots&\vdots\\1&x_n\end{array}\right]\quad
+\beta=\left[\begin{array}{c}a\\b\end{array}\right]\quad
+e=\left[\begin{array}{c}e_1\\e_2\\e_3\\\vdots\\e_n\end{array}\right]
+\]
+
+non-vector form:
+\[
+y_i = a + b\cdot x_i + e_i
+\]
+<<eval=FALSE>>=
+a = 3
+b = 1
+n = 8
+sigma_e = 4
+x = seq(1,n)
+@
+Now compute $Y$ with the assumption that $e_i\sim N(0,\sigma_e)$
+
+Note that the $e_i$ values are the only random component.
+
+<<eval=FALSE>>=
+e = rnorm(n,0,sigma_e)
+
+y = a + b*x + e
+
+plot(y~x)
+@
+
+Run a simple regression using \textt{lm}
+
+<<eval=FALSE>>=
+lm1 = lm(y~x)
+@
+
+As usual, you get nothing from R unless you ask for something
+
+<<eval=FALSE>>=
+summary(lm1)
+@
+
+Let's examine the output data structure more closely:
+
+<<eval=FALSE>>=
+str(lm1)
+@
+
+Note that the \texttt{lm1} data structure contains a dataframe with the (x,y) pairs that were actually used, 
+\texttt{lm1$model}.
+
+This is important because it excludes any discarded pairs.
+<<eval=FALSE>>=
+str(lm1$model)
+@
+
+Now construct the design matrix $X$ for the matrix formulation
+
+<<eval=FALSE>>=
+X = matrix(c(rep(1,n),x),nrow=n,ncol=2)
+X
+@
+
+Also the $Y$ and $\beta$ vectors
+
+<<eval=FALSE>>=
+Y = matrix(y,nrow=n,ncol=1)
+Y
+
+beta = matrix(c(a,b),nrow=2,ncol=1)
+beta
+@
+
+Compute the transpose of $X$, $X'$
+
+<<eval=FALSE>>=
+X_transpose = t(X)
+X_transpose
+@
+
+The $\beta$ values are obtained from the following system of linear equations:
+\[
+X'X\beta = X'Y
+\]
+If $X'X$ is invertible, this leads to the solution:
+\[
+\beta = (X'X)^{-1}X'Y
+\]
+
+<<eval=FALSE>>=
+(X_transpose %*% X)
+@
+
+\end{document}
