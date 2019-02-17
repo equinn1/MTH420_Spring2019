@@ -1,0 +1,15 @@
+\documentclass{article}
+
+\begin{document}
+
+Example of how to run an R script and save the output in 
+a pdf.
+
+Note: this assumes that the R script runs with no errors.
+
+<<>>=
+source('simplereg1.R',echo=TRUE,print.eval=FALSE)
+@
+
+
+\end{document}

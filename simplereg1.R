@@ -25,9 +25,7 @@ plot(y~x,data=df)      # scatterplot of y against x
 lm1 = lm(y~x,data=df)  # run the simple regression
 summary(lm1)           # show the results
 
-lines(df$x, fitted(lm1), col="blue")   # show fitted line
-
-lines(lm1$model$x, fitted(lm1), col="green") #this works
+lines(lm1$model$x, fitted(lm1), col="green") #show fitted
 
 plot(lm1$residuals~lm1$model$x)  # plot the residuals
 abline(h=0)                      # add line at zero
